@@ -1,19 +1,24 @@
 {
   "name": "inventory-mockup",
   "version": "1.0.0",
-  "description": "",
+  "description": "Mockup of corporate inventory system",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Osorkon21/inventory-mockup.git"
   },
   "author": "Osorkon21",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Osorkon21/inventory-mockup/issues"
+  },
+  "homepage": "https://github.com/Osorkon21/inventory-mockup#readme",
   "dependencies": {
     "express": "^4.18.2",
     "mongoose": "^8.2.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.11.20",
-    "typescript": "^5.3.3"
   }
 }

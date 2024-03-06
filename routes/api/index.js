@@ -1,4 +1,5 @@
-const router = require('express').Router();
+import express from "express"
+const router = express.Router();
 // import categoryRoutes from './category.routes';
 // import goalRoutes from './goal.routes';
 // import userRoutes from './user.routes';

@@ -1,6 +1,12 @@
 import express from 'express';
-import routes from "./routes";
-import db from './config/connection';
+import routes from "./routes/index.js";
+import db from './config/connection.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 app.use(express.json());
@@ -11,7 +17,7 @@ app.use(express.static("public"));
 
 app.use(routes);
 
-app.get("*", (req, res) => res.sendFile('index.html'));
+app.get("*", (req, res) => res.sendFile(path.join(__dirname, "public/index.html")));
 
 db.once('open', () => {
   app.listen(PORT, () => {

@@ -1,0 +1,53 @@
+body {
+  background-color: aquamarine;
+}
+
+.logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 200px;
+  height: 200px;
+  margin-top: 2rem;
+}
+
+h1 {
+  text-align: center;
+}
+
+.checkout-form {
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+h2 {
+  text-align: center;
+}
+
+#date-select {
+  width: 150px;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0px 8px;
+}
+
+.heading-row {
+  outline: black solid 2px;
+  border-radius: 10px;
+}
+
+.table-header {
+  font-size: x-large;
+  width: 150px;
+}
+
+.quantity-select {
+  width: 50px;
+}
+
+#name,
+#email {
+  width: 175px;
+}

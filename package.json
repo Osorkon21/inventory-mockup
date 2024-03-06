@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "npx nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -16,6 +16,7 @@
   "bugs": {
     "url": "https://github.com/Osorkon21/inventory-mockup/issues"
   },
+  "type": "module",
   "homepage": "https://github.com/Osorkon21/inventory-mockup#readme",
   "dependencies": {
     "express": "^4.18.2",

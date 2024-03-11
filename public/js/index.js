@@ -1,6 +1,36 @@
-import { seed } from "../../seeds/seed.js";
-
 $(function () {
+  async function getItems() {
+    try {
+      // get all items
+      const query = await fetch("/api/items", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      const response = await query.json();
+
+      if (response.status === "success") {
+        console.log(response)
+
+        // const dbCategories = response.payload.map(function (category) { return { id: category._id, name: category.name } });
+
+        // dbCategories.unshift(showAll);
+
+        // setCategories(dbCategories);
+        // setCurrentCategory("Show All");
+      }
+      else
+        throw new Error("Get all Items failed")
+    }
+    catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  getItems();
+
   const minDate = new Date().toISOString().substring(0, 10);
 
   $('#checkout-date').attr('min', minDate);
@@ -66,6 +96,56 @@ $(function () {
       }
     }
 
+    //   if (content && articleId) {
+    //     const response = await fetch('/api/comment', {
+    //       method: 'POST',
+    //       body: JSON.stringify({ content, articleId }),
+    //       headers: { 'Content-Type': 'application/json' },
+    //     });
+
+    //     if (response.ok) {
+    //       document.location.replace(`/article/${articleId}/comment`);
+    //     } else {
+    //       alert('Failed to save comment.');
+    //     }
+    //   }
+    //   else
+    //     alert("Your comment cannot be empty.");
+    // };
+
+    //   if (title && content) {
+    //     const response = await fetch(`/api/article/${articleId}`, {
+    //       method: 'PUT',
+    //       body: JSON.stringify({ title, content }),
+    //       headers: { 'Content-Type': 'application/json' },
+    //     });
+
+    //     if (response.ok) {
+    //       document.location.href = '/dashboard';
+    //     }
+    //     else {
+    //       alert('Failed to update post.');
+    //     }
+    //   }
+    //   else
+    //     alert("Title and Content are required fields.");
+    // }
+
+    // // "delete-btn" was clicked
+    // else {
+    //   const response = await fetch(`/api/article/${articleId}`, {
+    //     method: 'DELETE',
+    //     headers: { 'Content-Type': 'application/json' },
+    //   });
+
+    //   if (response.ok) {
+    //     document.location.replace('/dashboard');
+    //   }
+    //   else {
+    //     alert('Failed to delete post.');
+    //   }
+    // }
+
     // for (let cityName of cityNames) {
     //   headingRow.append($(`
     //   <th class="table-header">${cityName}</th>
@@ -92,16 +172,6 @@ $(function () {
     }
   }
 
-  function handleResetDB(e) {
-    e.preventDefault();
-
-    // do Order/Item DELETE routes here...
-
-    seed();
-
-    // reload page...
-  }
-
   function handleConfirm(e) {
     e.preventDefault();
 
@@ -114,6 +184,5 @@ $(function () {
   body.on("input", "#email", function () { email = $(this).val(); });
   body.on("submit", "#date-select", checkAvailability);
   body.on("click", "#checkout-btn", handleCheckout);
-  body.on("click", "#reset-db", handleResetDB);
   body.on("click", "#confirm-btn", handleConfirm);
 });

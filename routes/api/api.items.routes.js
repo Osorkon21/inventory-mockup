@@ -19,9 +19,9 @@ router.get("/", async (req, res) => {
 });
 
 // get a Item
-// router.get("/:ItemId", async (req, res) => {
+// router.get("/:itemId", async (req, res) => {
 //   try {
-//     const result = await Item.findOne({ _id: req.params.ItemId })
+//     const result = await Item.findOne({ _id: req.params.itemId })
 
 //       // do not include __v field in the query results
 //       .select("-__v")
@@ -54,7 +54,7 @@ router.get("/", async (req, res) => {
 // });
 
 // modify existing Item
-router.put("/:ItemId", async (req, res) => {
+router.put("/:itemId", async (req, res) => {
   try {
 
     // find and update Item
@@ -62,7 +62,7 @@ router.put("/:ItemId", async (req, res) => {
 
       // find Item with this filter
       {
-        _id: req.params.ItemId
+        _id: req.params.itemId
       },
 
       // update found Item with incoming info
@@ -83,70 +83,70 @@ router.put("/:ItemId", async (req, res) => {
 });
 
 // delete existing Item
-router.delete("/:ItemId", async (req, res) => {
-  try {
-    const result = await Item.findByIdAndDelete(req.params.ItemId);
+// router.delete("/:itemId", async (req, res) => {
+//   try {
+//     const result = await Item.findByIdAndDelete(req.params.itemId);
 
-    // delete Item's Thoughts when Item deleted
-    for (var i = 0; i < result.thoughts.length; i++)
-      await Thought.findByIdAndDelete(result.thoughts[i]);
+//     // delete Item's Thoughts when Item deleted
+//     for (var i = 0; i < result.thoughts.length; i++)
+//       await Thought.findByIdAndDelete(result.thoughts[i]);
 
-    res.json({ status: "Item and all thoughts deleted!", result });
-  }
-  catch (err) {
-    console.error(err.message);
-    res.status(500).json({ status: "error", result: err.message });
-  }
-});
+//     res.json({ status: "Item and all thoughts deleted!", result });
+//   }
+//   catch (err) {
+//     console.error(err.message);
+//     res.status(500).json({ status: "error", result: err.message });
+//   }
+// });
 
 // add friend to Item's friends list
-router.post("/:ItemId/friends/:friendId", async (req, res) => {
-  try {
-    const result = await Item.findOneAndUpdate(
-      {
-        // find Item
-        _id: req.params.ItemId
-      },
-      {
-        // add new friend to Item's friends array
-        $push: { friends: req.params.friendId }
-      },
-      {
-        new: true
-      }
-    );
+// router.post("/:itemId/friends/:friendId", async (req, res) => {
+//   try {
+//     const result = await Item.findOneAndUpdate(
+//       {
+//         // find Item
+//         _id: req.params.itemId
+//       },
+//       {
+//         // add new friend to Item's friends array
+//         $push: { friends: req.params.friendId }
+//       },
+//       {
+//         new: true
+//       }
+//     );
 
-    res.json({ status: "success", result });
-  }
-  catch (err) {
-    console.error(err.message);
-    res.status(500).json({ status: "error", result: err.message });
-  }
-});
+//     res.json({ status: "success", result });
+//   }
+//   catch (err) {
+//     console.error(err.message);
+//     res.status(500).json({ status: "error", result: err.message });
+//   }
+// });
 
 // remove friend from Item's friends list
-router.delete("/:ItemId/friends/:friendId", async (req, res) => {
-  try {
-    const result = await Item.findOneAndUpdate(
-      {
-        // find Item
-        _id: req.params.ItemId
-      },
-      {
-        // remove friend from Item's friends array
-        $pull: { friends: req.params.friendId }
-      },
-      {
-        new: true
-      }
-    );
+// router.delete("/:itemId/friends/:friendId", async (req, res) => {
+//   try {
+//     const result = await Item.findOneAndUpdate(
+//       {
+//         // find Item
+//         _id: req.params.itemId
+//       },
+//       {
+//         // remove friend from Item's friends array
+//         $pull: { friends: req.params.friendId }
+//       },
+//       {
+//         new: true
+//       }
+//     );
 
-    res.json({ status: "delete successful", result });
-  }
-  catch (err) {
-    console.error(err.message);
-    res.status(500).json({ status: "error", result: err.message });
-  }
-});
+//     res.json({ status: "delete successful", result });
+//   }
+//   catch (err) {
+//     console.error(err.message);
+//     res.status(500).json({ status: "error", result: err.message });
+//   }
+// });
 
 export default router;

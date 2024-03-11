@@ -1,3 +1,4 @@
+import 'dotenv/config.js'
 import express from 'express';
 import routes from "./routes/index.js";
 import db from './config/connection.js';
@@ -17,7 +18,7 @@ app.use(express.static("public"));
 
 app.use(routes);
 
-app.get("*", (req, res) => res.sendFile(path.join(__dirname, "public/index.html")));
+app.get("*", (_, res) => res.sendFile(path.join(__dirname, "public/index.html")));
 
 db.once('open', () => {
   app.listen(PORT, () => {

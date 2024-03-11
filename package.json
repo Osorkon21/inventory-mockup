@@ -19,6 +19,7 @@
   "type": "module",
   "homepage": "https://github.com/Osorkon21/inventory-mockup#readme",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "mongoose": "^8.2.0"
   }

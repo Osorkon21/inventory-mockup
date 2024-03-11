@@ -1,3 +1,5 @@
+import { seed } from "../../seeds/seed.js";
+
 $(function () {
   const minDate = new Date().toISOString().substring(0, 10);
 
@@ -90,6 +92,16 @@ $(function () {
     }
   }
 
+  function handleResetDB(e) {
+    e.preventDefault();
+
+    // do Order/Item DELETE routes here...
+
+    seed();
+
+    // reload page...
+  }
+
   function handleConfirm(e) {
     e.preventDefault();
 
@@ -102,5 +114,6 @@ $(function () {
   body.on("input", "#email", function () { email = $(this).val(); });
   body.on("submit", "#date-select", checkAvailability);
   body.on("click", "#checkout-btn", handleCheckout);
+  body.on("click", "#reset-db", handleResetDB);
   body.on("click", "#confirm-btn", handleConfirm);
 });

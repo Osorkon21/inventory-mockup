@@ -1,13 +1,7 @@
 import express from "express"
 const router = express.Router();
-// import categoryRoutes from './category.routes';
-// import goalRoutes from './goal.routes';
-// import userRoutes from './user.routes';
-// import openaiRoutes from './openai.routes';
+import itemRoutes from "./api.items.routes.js"
 
-// router.use('/goals', goalRoutes);
-// router.use('/users', userRoutes);
-// router.use('/categories', categoryRoutes)
-// router.use('/openai', openaiRoutes)
+router.use('/items', itemRoutes);
 
 export default router;

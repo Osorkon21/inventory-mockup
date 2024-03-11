@@ -142,11 +142,15 @@ const seedData = [
   }
 ];
 
-db.once('open', async () => {
-  await Item.insertMany(seedData)
-  console.log("seeding complete")
-  process.exit(0)
-});
+function seed() {
+  db.once('open', async () => {
+    await Item.insertMany(seedData)
+    console.log("seeding complete")
+    process.exit(0)
+  });
+}
+
+export { seed }
 
 /*
   To seed data:

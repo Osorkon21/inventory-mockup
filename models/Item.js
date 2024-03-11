@@ -11,10 +11,14 @@ const itemSchema = new Schema(
       required: true
     },
     checkoutDate: {
-      type: Date
+      type: Date,
+      required: true,
+      default: null
     },
     returnDate: {
-      type: Date
+      type: Date,
+      required: true,
+      default: null
     }
   },
   {

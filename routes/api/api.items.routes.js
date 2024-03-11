@@ -5,10 +5,23 @@ import { Item } from "../../models/index.js"
 // get all Items
 router.get("/", async (req, res) => {
   try {
-    const result = await Item.find()
+    const result = await Item.aggregate([
+      {
+        $group: {
+          _id: { name: "$name", location: "$location" },
+          count: { $sum: 1 },
+          id: { $push: "$_id" },
+          checkoutDate: { $push: "$checkoutDate" },
+          returnDate: { $push: "$returnDate" }
 
-      // do not include __v field in the query results
-      .select("-__v");
+        }
+      },
+      {
+        $match: {
+          count: { $gt: 0 }
+        }
+      }
+    ]);
 
     res.json({ status: "success", result });
   }

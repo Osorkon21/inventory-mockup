@@ -3,17 +3,16 @@ const router = express.Router();
 import { Item } from "../../models/index.js"
 
 // get all Items
-router.get("/", async (req, res) => {
+router.get("/", async (_, res) => {
   try {
     const result = await Item.aggregate([
       {
         $group: {
           _id: { name: "$name", location: "$location" },
           count: { $sum: 1 },
-          id: { $push: "$_id" },
-          checkoutDate: { $push: "$checkoutDate" },
-          returnDate: { $push: "$returnDate" }
-
+          data: {
+            $push: { id: "$_id", checkoutDate: "$checkoutDate", returnDate: "$returnDate" }
+          }
         }
       },
       {

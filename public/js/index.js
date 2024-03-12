@@ -1,7 +1,6 @@
 $(function () {
   async function getItems() {
     try {
-      // get all items
       const query = await fetch("/api/items", {
         method: "GET",
         headers: {
@@ -12,14 +11,8 @@ $(function () {
       const response = await query.json();
 
       if (response.status === "success") {
-        console.log(response)
-
-        // const dbCategories = response.payload.map(function (category) { return { id: category._id, name: category.name } });
-
-        // dbCategories.unshift(showAll);
-
-        // setCategories(dbCategories);
-        // setCurrentCategory("Show All");
+        allItems = response.result;
+        sortAllItems();
       }
       else
         throw new Error("Get all Items failed")
@@ -29,7 +22,46 @@ $(function () {
     }
   }
 
-  getItems();
+  function sortAllItems() {
+    const groupedByLocation = allItems.reduce((acc, obj) => {
+      const location = obj._id.location;
+      if (!acc[location]) {
+        acc[location] = [];
+      }
+      acc[location].push(obj);
+      return acc;
+    }, {});
+
+    allItems = Object.values(groupedByLocation);
+
+    allItems.sort((a, b) => {
+      const locA = a[0]._id.location.toUpperCase();
+      const locB = b[0]._id.location.toUpperCase();
+
+      if (locA < locB)
+        return -1;
+
+      if (locA > locB)
+        return 1;
+
+      return 0;
+    });
+
+    for (let item of allItems) {
+      item.sort((a, b) => {
+        const nameA = a._id.name.toUpperCase();
+        const nameB = b._id.name.toUpperCase();
+
+        if (nameA < nameB)
+          return -1;
+
+        if (nameA > nameB)
+          return 1;
+
+        return 0;
+      })
+    }
+  }
 
   const minDate = new Date().toISOString().substring(0, 10);
 
@@ -43,11 +75,16 @@ $(function () {
   const headingRow = $(".heading-row")
   const modalBody = $(".modal-body");
 
+  let allItems = [];
+  let availableItems = [];
+
   let checkoutDate;
   let returnDate;
   const items = [];
   let name;
   let email;
+
+  getItems();
 
   function checkAvailability(e) {
     e.preventDefault();
@@ -66,35 +103,99 @@ $(function () {
     //   return;
     // }
 
+    if (!allItems.length) {
+      submitError.text("Slow response from item database. Please wait a few seconds and try again.");
+      return;
+    }
+
     if (hiddenTable.attr("class") === "d-none")
       hiddenTable.attr("class", "");
+
+    const groupedByAvailability = allItems.reduce((acc, obj) => {
+      const location = obj._id.location;
+
+      if (!acc[location]) {
+        acc[location] = [];
+      }
+
+      acc[location].push(obj);
+
+      return acc;
+    }, {});
 
     populateTable();
   }
 
   function populateTable() {
+    console.log(allItems)
 
-    // rename this to availableItems
-    const aggregateItems = [];
+    for (let itemArr of allItems) {
+      const cityName = itemArr[0]._id.location;
 
-    for (let item of items) {
-      const result = aggregateItems.findIndex((aggregateItem) => {
-        aggregateItem.name === item.name && aggregateItem.location === item.location
-      });
+      headingRow.append($(`
+      <th class="table-header" id="${cityName}">${cityName}</th>
+      `));
 
-      if (result !== -1) {
-        aggregateItems[i].count++;
-      }
-      else {
-        aggregateItems.push(
-          {
-            name: item.name,
-            location: item.location,
-            count: 1
-          }
-        )
+      for (let item of itemArr) {
+        const itemName = item._id.name;
+        const tableRow = $(`#${itemName}`);
+
+        if (!tableRow.length) {
+          const newTableRow = $(`
+          <tr id="${itemName}">
+            <th class="ps-2">${itemName}</th>
+          </tr>
+          `).appendTo(checkoutTable);
+
+          newTableRow.append($(`
+          <td>
+            <div class="d-flex flex-column gap-1">
+              <span>Available: ${item.count}</span>
+              <div>
+                <span>Needed: </span>
+                <input id="${item._id.location}-${item._id.name}" class="quantity-select" type="number" placeholder="0">
+              </div>
+            </div>
+          </td>
+          `))
+        }
+        else {
+          tableRow.append($(`
+          <td>
+            <div class="d-flex flex-column gap-1">
+              <span>Available: ${item.count}</span>
+              <div>
+                <span>Needed: </span>
+                <input id="${item._id.location}-${item._id.name}" class="quantity-select" type="number" placeholder="0">
+              </div>
+            </div>
+          </td>
+          `));
+        }
       }
     }
+
+    // rename this to availableItems
+    // const aggregateItems = [];
+
+    // for (let item of items) {
+    //   const result = aggregateItems.findIndex((aggregateItem) => {
+    //     aggregateItem.name === item.name && aggregateItem.location === item.location
+    //   });
+
+    //   if (result !== -1) {
+    //     aggregateItems[i].count++;
+    //   }
+    //   else {
+    //     aggregateItems.push(
+    //       {
+    //         name: item.name,
+    //         location: item.location,
+    //         count: 1
+    //       }
+    //     )
+    //   }
+    // }
 
     //   if (content && articleId) {
     //     const response = await fetch('/api/comment', {
@@ -145,21 +246,6 @@ $(function () {
     //     alert('Failed to delete post.');
     //   }
     // }
-
-    // for (let cityName of cityNames) {
-    //   headingRow.append($(`
-    //   <th class="table-header">${cityName}</th>
-    //   `))
-    // }
-
-    // for (let itemName of itemNames) {
-    //   const tableRow = $(`
-    //   <tr>
-    //     <th class="ps-2">${itemName}</th>
-    //   </tr>
-    //   `).appendTo(checkoutTable);
-
-
     // }
 
   }

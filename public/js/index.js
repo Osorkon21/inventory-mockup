@@ -73,6 +73,7 @@ $(function () {
   const hiddenTable = $("#hide-if-no-date");
   const checkoutTable = $(".checkout-table")
   const modalBody = $(".modal-body");
+  const confirmBtn = $("#confirm-btn");
 
   let allItems = [];
   let availableItems = [];
@@ -86,7 +87,9 @@ $(function () {
   getItems();
 
   function checkAvailability(e) {
-    e.preventDefault();
+    if (e)
+      e.preventDefault();
+
     submitError.text("");
 
     checkoutDate = new Date($("#checkout-date").val());
@@ -243,17 +246,67 @@ $(function () {
   function handleCheckout(e) {
     e.preventDefault();
 
-    if (!items.length) {
+    modalBody.empty();
+    confirmBtn.attr("class", "btn btn-primary");
+    const locList = Object.keys(items).sort(uppercaseSort);
+
+    if (locList.length === 0) {
+      confirmBtn.attr("class", "btn btn-primary d-none");
       modalBody.text("No items selected.")
+    }
+    else {
+      modalBody.append($(`
+      <div class="mb-2">
+        <div>Checkout: <strong>${checkoutDate.toLocaleString().slice(0, 9)}</strong></div>
+        <div>Return: <strong>${returnDate.toLocaleString().slice(0, 9)}</strong></div>
+      </div>
+      `))
+
+      for (let location of locList) {
+        const itemList = Object.keys(items[location]).sort(uppercaseSort);
+
+        const locationEl = $(`
+        <div class="ms-2">
+          <h6>${location}</h6>
+        </div>
+        `).appendTo(modalBody);
+
+        for (let item of itemList) {
+          locationEl.append($(`
+          <p class="ms-2">${items[location][item].id.length} ${item}(s)</p>
+          `))
+        }
+      }
     }
   }
 
-  function handleConfirm(e) {
+  async function handleConfirm(e) {
     e.preventDefault();
 
-    // do Order POST route here...
+    if (confirmBtn.attr("class") === "btn btn-primary") {
+      // do Order POST route here...
 
-    console.log("confirm button clicked")
+      await getItems();
+      checkAvailability();
+
+      modalBody.empty();
+      modalBody.text("Order confirmed!");
+
+      confirmBtn.attr("class", "btn btn-primary d-none");
+    }
+  }
+
+  function uppercaseSort(a, b) {
+    const stringA = a.toUpperCase();
+    const stringB = b.toUpperCase();
+
+    if (stringA < stringB)
+      return -1;
+
+    if (stringA > stringB)
+      return 1;
+
+    return 0;
   }
 
   body.on("input", "#name", function () { name = $(this).val(); });
@@ -288,10 +341,13 @@ $(function () {
       }
     }
     else {
-      delete items[location][itemName];
+      if (items[location]) {
+        if (items[location][itemName])
+          delete items[location][itemName];
 
-      if (Object.keys(items[location]).length === 0)
-        delete items[location];
+        if (Object.keys(items[location]).length === 0)
+          delete items[location];
+      }
     }
   })
 });

@@ -1,20 +1,5 @@
 import { Schema, model } from 'mongoose';
 
-const dateSchema = new Schema(
-  {
-    checkoutDate: {
-      type: Date,
-      required: true,
-      default: null
-    },
-    returnDate: {
-      type: Date,
-      required: true,
-      default: null
-    }
-  }
-)
-
 const itemSchema = new Schema(
   {
     name: {
@@ -25,7 +10,12 @@ const itemSchema = new Schema(
       type: String,
       required: true
     },
-    datesInUse: [dateSchema]
+    datesInUse: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Date"
+      }
+    ]
   },
   {
     // excludes default getter for _id field

@@ -24,13 +24,7 @@ router.get("/:orderId", async (req, res) => {
     const result = await Order.findOne({ _id: req.params.orderId })
 
       // do not include __v field in the query results
-      .select("-__v")
-
-      // add thoughts and friends associated with this Order to query results, without their __v fields
-      .populate([
-        { path: "thoughts", select: "-__v" },
-        { path: "friends", select: "-__v" }
-      ]);
+      .select("-__v");
 
     res.json({ status: "success", result });
   }

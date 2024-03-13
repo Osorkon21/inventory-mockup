@@ -5,26 +5,7 @@ const seedData = [
   {
     name: "Easel",
     location: "Minneapolis",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 19),
-      returnDate: new Date(2024, 2, 25)
-    }]
-  },
-  {
-    name: "Easel",
-    location: "Minneapolis",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 19),
-      returnDate: new Date(2024, 2, 25)
-    }]
-  },
-  {
-    name: "Easel",
-    location: "Minneapolis",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 19),
-      returnDate: new Date(2024, 2, 25)
-    }]
+    datesInUse: []
   },
   {
     name: "Easel",
@@ -34,18 +15,22 @@ const seedData = [
   {
     name: "Easel",
     location: "Minneapolis",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 15),
-      returnDate: new Date(2024, 2, 20)
-    }]
+    datesInUse: []
   },
   {
     name: "Easel",
     location: "Minneapolis",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 15),
-      returnDate: new Date(2024, 2, 20)
-    }]
+    datesInUse: []
+  },
+  {
+    name: "Easel",
+    location: "Minneapolis",
+    datesInUse: []
+  },
+  {
+    name: "Easel",
+    location: "Minneapolis",
+    datesInUse: []
   },
   {
     name: "Easel",
@@ -55,34 +40,17 @@ const seedData = [
   {
     name: "Easel",
     location: "Mankato",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 15),
-      returnDate: new Date(2024, 2, 20)
-    }]
+    datesInUse: []
   },
   {
     name: "Easel",
     location: "Mankato",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 15),
-      returnDate: new Date(2024, 2, 16)
-    }]
+    datesInUse: []
   },
   {
     name: "Easel",
     location: "Mankato",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 15),
-      returnDate: new Date(2024, 2, 16)
-    }]
-  },
-  {
-    name: "Whiteboard",
-    location: "Minneapolis",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 15),
-      returnDate: new Date(2024, 2, 16)
-    }]
+    datesInUse: []
   },
   {
     name: "Whiteboard",
@@ -92,26 +60,22 @@ const seedData = [
   {
     name: "Whiteboard",
     location: "Minneapolis",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 14),
-      returnDate: new Date(2024, 2, 17)
-    }]
+    datesInUse: []
   },
   {
     name: "Whiteboard",
     location: "Minneapolis",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 14),
-      returnDate: new Date(2024, 2, 17)
-    }]
+    datesInUse: []
   },
   {
     name: "Whiteboard",
     location: "Minneapolis",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 14),
-      returnDate: new Date(2024, 2, 17)
-    }]
+    datesInUse: []
+  },
+  {
+    name: "Whiteboard",
+    location: "Minneapolis",
+    datesInUse: []
   },
   {
     name: "Whiteboard",
@@ -121,26 +85,17 @@ const seedData = [
   {
     name: "Whiteboard",
     location: "Mankato",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 15),
-      returnDate: new Date(2024, 2, 18)
-    }]
+    datesInUse: []
   },
   {
     name: "Whiteboard",
     location: "Mankato",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 15),
-      returnDate: new Date(2024, 2, 18)
-    }]
+    datesInUse: []
   },
   {
     name: "Whiteboard",
     location: "Mankato",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 15),
-      returnDate: new Date(2024, 2, 18)
-    }]
+    datesInUse: []
   },
   {
     name: "Whiteboard",
@@ -150,10 +105,7 @@ const seedData = [
   {
     name: "Table",
     location: "Minneapolis",
-    datesInUse: [{
-      checkoutDate: new Date(2024, 2, 20),
-      returnDate: new Date(2024, 2, 23)
-    }]
+    datesInUse: []
   },
   {
     name: "Table",

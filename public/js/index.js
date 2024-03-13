@@ -22,6 +22,33 @@ $(function () {
     }
   }
 
+  async function getOrders() {
+    try {
+      const query = await fetch("/api/orders", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      const response = await query.json();
+
+      if (response.status === "success") {
+        const allOrders = response.result;
+
+        if (allOrders.length)
+          orderLink.attr("class", "btn btn-primary");
+        else
+          orderLink.attr("class", "btn btn-primary d-none")
+      }
+      else
+        throw new Error("Get all Orders failed")
+    }
+    catch (err) {
+      console.log(err.message);
+    }
+  }
+
   function sortAllItems() {
     const groupedByLocation = allItems.reduce((acc, obj) => {
       const location = obj._id.location;
@@ -74,6 +101,7 @@ $(function () {
   const checkoutTable = $(".checkout-table")
   const nameError = $("#name-error");
   const emailError = $("#email-error");
+  const orderLink = $("#order-link");
   const checkoutError = $("#checkout-error");
   const modal = $(".modal")
   const modalBody = $(".modal-body");
@@ -89,6 +117,7 @@ $(function () {
   let email;
 
   getItems();
+  getOrders();
 
   function checkAvailability(e) {
     if (e)
@@ -264,16 +293,16 @@ $(function () {
     e.preventDefault();
 
     if (confirmBtn.attr("class") === "btn btn-primary") {
+      const allItemIds = []
+
+
 
       for (let location of Object.keys(items)) {
-
         for (let item of Object.keys(items[location])) {
-          console.log(items[location][item]);
-
           const idArr = items[location][item].id;
 
           for (let id of idArr) {
-            console.log(id);
+            allItemIds.push(id);
 
             try {
               const query = await fetch(`/api/items/${id}`, {
@@ -288,14 +317,13 @@ $(function () {
               if (response.status === "success") {
                 const result = response.result;
 
-                console.log(result);
-
                 const newDates = {
                   checkoutDate: checkoutDate,
                   returnDate: returnDate
                 }
 
                 result.datesInUse.push(newDates);
+
                 try {
                   const query1 = await fetch(`/api/items/${id}`, {
                     method: 'PUT',
@@ -305,14 +333,8 @@ $(function () {
 
                   const response1 = await query1.json();
 
-                  console.log(response1);
-
-                  if (response1.status === "success") {
-                    console.log(response1.result);
-                  }
-                  else {
+                  if (response1.status !== "success")
                     throw new Error("Update Item failed")
-                  }
                 }
                 catch (err) {
                   console.log(err.message)
@@ -328,24 +350,36 @@ $(function () {
         }
       }
 
-      // do Order POST route here...
-      // if (content && articleId) {
-      //   const response = await fetch('/api/comment', {
-      //     method: 'POST',
-      //     body: JSON.stringify({ content, articleId }),
-      //     headers: { 'Content-Type': 'application/json' },
-      //   });
+      try {
+        const newOrder = {
+          items: allItemIds,
+          datesInUse: {
+            checkoutDate: checkoutDate,
+            returnDate: returnDate
+          },
+          whoOrdered: name,
+          email: email
+        }
 
-      //   if (response.ok) {
-      //     document.location.replace(`/article/${articleId}/comment`);
-      //   } else {
-      //     alert('Failed to save comment.');
-      //   }
-      // }
-      // else
-      //   alert("Your comment cannot be empty.");
+        const query = await fetch('/api/orders', {
+          method: 'POST',
+          body: JSON.stringify(newOrder),
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        const response = await query.json();
+
+        if (response.status === "success")
+          console.log(response);
+        else
+          throw new Error("Create Order failed");
+      }
+      catch (err) {
+        console.log(err.message);
+      }
 
       await getItems();
+      await getOrders();
       checkAvailability();
 
       modalBody.empty();

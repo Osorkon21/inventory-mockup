@@ -72,6 +72,10 @@ $(function () {
   const submitError = $(".submit-error");
   const hiddenTable = $("#hide-if-no-date");
   const checkoutTable = $(".checkout-table")
+  const nameError = $("#name-error");
+  const emailError = $("#email-error");
+  const checkoutError = $("#checkout-error");
+  const modal = $(".modal")
   const modalBody = $(".modal-body");
   const confirmBtn = $("#confirm-btn");
 
@@ -247,16 +251,31 @@ $(function () {
     e.preventDefault();
 
     modalBody.empty();
+    nameError.text("");
+    emailError.text("");
+    checkoutError.text("");
     confirmBtn.attr("class", "btn btn-primary");
     const locList = Object.keys(items).sort(uppercaseSort);
 
-    if (locList.length === 0) {
-      confirmBtn.attr("class", "btn btn-primary d-none");
-      modalBody.text("No items selected.")
+    if (!name || !email || locList.length === 0) {
+      if (!name)
+        nameError.text("Please enter your name.");
+
+      if (!email)
+        emailError.text("Please enter your email.");
+
+      if (locList.length === 0)
+        checkoutError.text("No items selected!")
+
+      return;
     }
     else {
+      modal.modal("show");
+
       modalBody.append($(`
       <div class="mb-2">
+        <div>Name: <strong>${name}</strong></div>
+        <div>Email: <strong>${email}</strong></div>
         <div>Checkout: <strong>${checkoutDate.toLocaleString().slice(0, 9)}</strong></div>
         <div>Return: <strong>${returnDate.toLocaleString().slice(0, 9)}</strong></div>
       </div>
@@ -291,6 +310,9 @@ $(function () {
 
       modalBody.empty();
       modalBody.text("Order confirmed!");
+
+      for (let key in items)
+        delete items[key];
 
       confirmBtn.attr("class", "btn btn-primary d-none");
     }

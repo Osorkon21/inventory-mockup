@@ -47,17 +47,20 @@
 
           <div class="id-inputs d-flex flex-column">
             <label for="name">Name</label>
-            <input type="text" id="name" placeholder="John Doe">
+            <input type="text" id="name" placeholder="What's your name?">
+            <div class="text-danger" id="name-error"></div>
 
             <label for="email">Email</label>
-            <input type="email" id="email" placeholder="fake@example.com">
+            <input type="email" id="email" placeholder="What's your email?">
+            <div class="text-danger" id="email-error"></div>
           </div>
 
           <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary my-2" id="checkout-btn" data-bs-toggle="modal"
-            data-bs-target="#summaryModal">
+          <button type="button" class="btn btn-primary my-2" id="checkout-btn">
             Checkout
           </button>
+
+          <div class="text-danger mb-2" id="checkout-error"></div>
 
         </section>
 

@@ -187,47 +187,8 @@ $(function () {
             </div>
           </td>
           `));
-
-        // const numInput = $(`${item._id.location}-${item._id.name}`)
-
-        // numInput.on("")
       }
     }
-
-    //   if (content && articleId) {
-    //     const response = await fetch('/api/comment', {
-    //       method: 'POST',
-    //       body: JSON.stringify({ content, articleId }),
-    //       headers: { 'Content-Type': 'application/json' },
-    //     });
-
-    //     if (response.ok) {
-    //       document.location.replace(`/article/${articleId}/comment`);
-    //     } else {
-    //       alert('Failed to save comment.');
-    //     }
-    //   }
-    //   else
-    //     alert("Your comment cannot be empty.");
-    // };
-
-    //   if (title && content) {
-    //     const response = await fetch(`/api/article/${articleId}`, {
-    //       method: 'PUT',
-    //       body: JSON.stringify({ title, content }),
-    //       headers: { 'Content-Type': 'application/json' },
-    //     });
-
-    //     if (response.ok) {
-    //       document.location.href = '/dashboard';
-    //     }
-    //     else {
-    //       alert('Failed to update post.');
-    //     }
-    //   }
-    //   else
-    //     alert("Title and Content are required fields.");
-    // }
 
     // // "delete-btn" was clicked
     // else {
@@ -303,7 +264,86 @@ $(function () {
     e.preventDefault();
 
     if (confirmBtn.attr("class") === "btn btn-primary") {
+
+      for (let location of Object.keys(items)) {
+
+        for (let item of Object.keys(items[location])) {
+          console.log(items[location][item]);
+
+          const idArr = items[location][item].id;
+
+          for (let id of idArr) {
+            console.log(id);
+
+            try {
+              const query = await fetch(`/api/items/${id}`, {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json"
+                }
+              });
+
+              const response = await query.json();
+
+              if (response.status === "success") {
+                const result = response.result;
+
+                console.log(result);
+
+                const newDates = {
+                  checkoutDate: checkoutDate,
+                  returnDate: returnDate
+                }
+
+                result.datesInUse.push(newDates);
+                try {
+                  const query1 = await fetch(`/api/items/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(result),
+                    headers: { 'Content-Type': 'application/json' },
+                  });
+
+                  const response1 = await query1.json();
+
+                  console.log(response1);
+
+                  if (response1.status === "success") {
+                    console.log(response1.result);
+                  }
+                  else {
+                    throw new Error("Update Item failed")
+                  }
+                }
+                catch (err) {
+                  console.log(err.message)
+                }
+              }
+              else
+                throw new Error("Get Item failed")
+            }
+            catch (err) {
+              console.log(err.message);
+            }
+          }
+        }
+      }
+
       // do Order POST route here...
+      // if (content && articleId) {
+      //   const response = await fetch('/api/comment', {
+      //     method: 'POST',
+      //     body: JSON.stringify({ content, articleId }),
+      //     headers: { 'Content-Type': 'application/json' },
+      //   });
+
+      //   if (response.ok) {
+      //     document.location.replace(`/article/${articleId}/comment`);
+      //   } else {
+      //     alert('Failed to save comment.');
+      //   }
+      // }
+      // else
+      //   alert("Your comment cannot be empty.");
 
       await getItems();
       checkAvailability();

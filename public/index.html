@@ -56,9 +56,15 @@
           </div>
 
           <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary my-2" id="checkout-btn">
-            Checkout
-          </button>
+          <div class="d-flex justify-content-between mt-2">
+            <button type="button" class="btn btn-primary" id="checkout-btn">
+              Checkout
+            </button>
+
+            <a class="btn btn-primary d-none" id="order-link" href="/orders">
+              View Orders
+            </a>
+          </div>
 
           <div class="text-danger mb-2" id="checkout-error"></div>
 

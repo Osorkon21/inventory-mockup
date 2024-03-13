@@ -18,6 +18,8 @@ app.use(express.static("public"));
 
 app.use(routes);
 
+app.get("/orders", (_, res) => res.sendFile(path.join(__dirname, "public/orders.html")))
+
 app.get("*", (_, res) => res.sendFile(path.join(__dirname, "public/index.html")));
 
 db.once('open', () => {

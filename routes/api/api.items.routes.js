@@ -30,27 +30,21 @@ router.get("/", async (_, res) => {
   }
 });
 
-// get a Item
-// router.get("/:itemId", async (req, res) => {
-//   try {
-//     const result = await Item.findOne({ _id: req.params.itemId })
+// get an Item
+router.get("/:itemId", async (req, res) => {
+  try {
+    const result = await Item.findOne({ _id: req.params.itemId })
 
-//       // do not include __v field in the query results
-//       .select("-__v")
+      // do not include __v field in the query results
+      .select("-__v");
 
-//       // add thoughts and friends associated with this Item to query results, without their __v fields
-//       .populate([
-//         { path: "thoughts", select: "-__v" },
-//         { path: "friends", select: "-__v" }
-//       ]);
-
-//     res.json({ status: "success", result });
-//   }
-//   catch (err) {
-//     console.error(err.message);
-//     res.status(500).json({ status: "error", result: err.message });
-//   }
-// });
+    res.json({ status: "success", result });
+  }
+  catch (err) {
+    console.error(err.message);
+    res.status(500).json({ status: "error", result: err.message });
+  }
+});
 
 // create new Item
 // router.post("/", async (req, res) => {

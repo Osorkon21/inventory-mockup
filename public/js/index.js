@@ -72,7 +72,6 @@ $(function () {
   const submitError = $(".submit-error");
   const hiddenTable = $("#hide-if-no-date");
   const checkoutTable = $(".checkout-table")
-  const headingRow = $(".heading-row")
   const modalBody = $(".modal-body");
 
   let allItems = [];
@@ -80,7 +79,9 @@ $(function () {
 
   let checkoutDate;
   let returnDate;
-  const items = [];
+
+  // will contain location: { [itemName]: {id[] (doubles as count with .length)} } 
+  const items = {};
   let name;
   let email;
 
@@ -90,18 +91,23 @@ $(function () {
     e.preventDefault();
     submitError.text("");
 
-    checkoutDate = $("#checkout-date").val();
-    returnDate = $("#return-date").val();
+    checkoutDate = new Date($("#checkout-date").val());
+    returnDate = new Date($("#return-date").val());
 
-    // if (!checkoutDate || !returnDate) {
-    //   submitError.text("Select a checkout and return date.");
-    //   return;
-    // }
+    const cdOffset = checkoutDate.getTimezoneOffset();
 
-    // if (new Date(checkoutDate) > new Date(returnDate)) {
-    //   submitError.text("Checkout date cannot be after the return date.");
-    //   return;
-    // }
+    checkoutDate.setMinutes(checkoutDate.getMinutes() + cdOffset);
+    returnDate.setMinutes(returnDate.getMinutes() + cdOffset);
+
+    if (checkoutDate.toString() === "Invalid Date" || returnDate.toString() === "Invalid Date") {
+      submitError.text("Select a checkout and return date.");
+      return;
+    }
+
+    if (checkoutDate > returnDate) {
+      submitError.text("Checkout date cannot be after the return date.");
+      return;
+    }
 
     if (!allItems.length) {
       submitError.text("Slow response from item database. Please wait a few seconds and try again.");
@@ -111,25 +117,40 @@ $(function () {
     if (hiddenTable.attr("class") === "d-none")
       hiddenTable.attr("class", "");
 
-    const groupedByAvailability = allItems.reduce((acc, obj) => {
-      const location = obj._id.location;
-
-      if (!acc[location]) {
-        acc[location] = [];
-      }
-
-      acc[location].push(obj);
-
-      return acc;
-    }, {});
+    availableItems = allItems.map(locationArray =>
+      locationArray.map(obj =>
+      ({
+        ...obj,
+        data: obj.data.filter(dataObj =>
+          isAvailable(dataObj.checkoutDate, dataObj.returnDate)
+        )
+      })
+      )
+    );
 
     populateTable();
   }
 
-  function populateTable() {
-    console.log(allItems)
+  function isAvailable(itemCheckoutDateString, itemReturnDateString) {
+    const dataCheckoutDate = new Date(itemCheckoutDateString);
+    const dataReturnDate = new Date(itemReturnDateString);
 
-    for (let itemArr of allItems) {
+    return (
+      checkoutDate > dataReturnDate ||
+      returnDate < dataCheckoutDate
+    );
+  }
+
+  function populateTable() {
+    checkoutTable.empty();
+
+    const headingRow = $(`
+      <tr class="heading-row">
+        <th class="table-header">Item</th>
+      </tr>
+    `).appendTo(checkoutTable);
+
+    for (let itemArr of availableItems) {
       const cityName = itemArr[0]._id.location;
 
       headingRow.append($(`
@@ -150,10 +171,10 @@ $(function () {
           newTableRow.append($(`
           <td>
             <div class="d-flex flex-column gap-1">
-              <span>Available: ${item.count}</span>
+              <span>Available: ${item.data.length}</span>
               <div>
                 <span>Needed: </span>
-                <input id="${item._id.location}-${item._id.name}" class="quantity-select" type="number" placeholder="0">
+                <input id="${item._id.location}-${item._id.name}" class="quantity-select" type="number" min="0" max="${item.data.length}" placeholder="0" onkeydown="return false">
               </div>
             </div>
           </td>
@@ -163,10 +184,10 @@ $(function () {
           tableRow.append($(`
           <td>
             <div class="d-flex flex-column gap-1">
-              <span>Available: ${item.count}</span>
+              <span>Available: ${item.data.length}</span>
               <div>
                 <span>Needed: </span>
-                <input id="${item._id.location}-${item._id.name}" class="quantity-select" type="number" placeholder="0">
+                <input id="${item._id.location}-${item._id.name}" class="quantity-select" type="number" min="0" max="${item.data.length}" placeholder="0" onkeydown="return false">
               </div>
             </div>
           </td>

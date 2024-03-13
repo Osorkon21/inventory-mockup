@@ -1,15 +1,7 @@
 import { Schema, model } from 'mongoose';
 
-const itemSchema = new Schema(
+const dateSchema = new Schema(
   {
-    name: {
-      type: String,
-      required: true
-    },
-    location: {
-      type: String,
-      required: true
-    },
     checkoutDate: {
       type: Date,
       required: true,
@@ -20,6 +12,20 @@ const itemSchema = new Schema(
       required: true,
       default: null
     }
+  }
+)
+
+const itemSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true
+    },
+    location: {
+      type: String,
+      required: true
+    },
+    datesInUse: [dateSchema]
   },
   {
     // excludes default getter for _id field

@@ -11,7 +11,7 @@ router.get("/", async (_, res) => {
           _id: { name: "$name", location: "$location" },
           count: { $sum: 1 },
           data: {
-            $push: { id: "$_id", checkoutDate: "$checkoutDate", returnDate: "$returnDate" }
+            $push: { id: "$_id", datesInUse: "$datesInUse" }
           }
         }
       },

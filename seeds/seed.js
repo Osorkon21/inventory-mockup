@@ -5,140 +5,165 @@ const seedData = [
   {
     name: "Easel",
     location: "Minneapolis",
-    checkoutDate: new Date(2024, 2, 19),
-    returnDate: new Date(2024, 2, 25)
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 19),
+      returnDate: new Date(2024, 2, 25)
+    }]
   },
   {
     name: "Easel",
     location: "Minneapolis",
-    checkoutDate: new Date(2024, 2, 19),
-    returnDate: new Date(2024, 2, 25)
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 19),
+      returnDate: new Date(2024, 2, 25)
+    }]
   },
   {
     name: "Easel",
     location: "Minneapolis",
-    checkoutDate: new Date(2024, 2, 19),
-    returnDate: new Date(2024, 2, 25)
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 19),
+      returnDate: new Date(2024, 2, 25)
+    }]
   },
   {
     name: "Easel",
     location: "Minneapolis",
-    checkoutDate: new Date(2024, 2, 19),
-    returnDate: new Date(2024, 2, 25)
+    datesInUse: []
   },
   {
     name: "Easel",
     location: "Minneapolis",
-    checkoutDate: new Date(2024, 2, 15),
-    returnDate: new Date(2024, 2, 20)
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 15),
+      returnDate: new Date(2024, 2, 20)
+    }]
   },
   {
     name: "Easel",
     location: "Minneapolis",
-    checkoutDate: new Date(2024, 2, 15),
-    returnDate: new Date(2024, 2, 20)
-  },
-  {
-    name: "Easel",
-    location: "Mankato",
-    checkoutDate: new Date(2024, 2, 15),
-    returnDate: new Date(2024, 2, 20)
-  },
-  {
-    name: "Easel",
-    location: "Mankato",
-    checkoutDate: new Date(2024, 2, 15),
-    returnDate: new Date(2024, 2, 20)
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 15),
+      returnDate: new Date(2024, 2, 20)
+    }]
   },
   {
     name: "Easel",
     location: "Mankato",
-    checkoutDate: new Date(2024, 2, 15),
-    returnDate: new Date(2024, 2, 16)
+    datesInUse: []
   },
   {
     name: "Easel",
     location: "Mankato",
-    checkoutDate: new Date(2024, 2, 15),
-    returnDate: new Date(2024, 2, 16)
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 15),
+      returnDate: new Date(2024, 2, 20)
+    }]
+  },
+  {
+    name: "Easel",
+    location: "Mankato",
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 15),
+      returnDate: new Date(2024, 2, 16)
+    }]
+  },
+  {
+    name: "Easel",
+    location: "Mankato",
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 15),
+      returnDate: new Date(2024, 2, 16)
+    }]
   },
   {
     name: "Whiteboard",
     location: "Minneapolis",
-    checkoutDate: new Date(2024, 2, 15),
-    returnDate: new Date(2024, 2, 16)
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 15),
+      returnDate: new Date(2024, 2, 16)
+    }]
   },
   {
     name: "Whiteboard",
     location: "Minneapolis",
-    checkoutDate: new Date(2024, 2, 15),
-    returnDate: new Date(2024, 2, 16)
+    datesInUse: []
   },
   {
     name: "Whiteboard",
     location: "Minneapolis",
-    checkoutDate: new Date(2024, 2, 14),
-    returnDate: new Date(2024, 2, 17)
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 14),
+      returnDate: new Date(2024, 2, 17)
+    }]
   },
   {
     name: "Whiteboard",
     location: "Minneapolis",
-    checkoutDate: new Date(2024, 2, 14),
-    returnDate: new Date(2024, 2, 17)
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 14),
+      returnDate: new Date(2024, 2, 17)
+    }]
   },
   {
     name: "Whiteboard",
     location: "Minneapolis",
-    checkoutDate: new Date(2024, 2, 14),
-    returnDate: new Date(2024, 2, 17)
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 14),
+      returnDate: new Date(2024, 2, 17)
+    }]
   },
   {
     name: "Whiteboard",
     location: "Minneapolis",
-    checkoutDate: new Date(2024, 2, 14),
-    returnDate: new Date(2024, 2, 17)
+    datesInUse: []
   },
   {
     name: "Whiteboard",
     location: "Mankato",
-    checkoutDate: new Date(2024, 2, 15),
-    returnDate: new Date(2024, 2, 18)
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 15),
+      returnDate: new Date(2024, 2, 18)
+    }]
   },
   {
     name: "Whiteboard",
     location: "Mankato",
-    checkoutDate: new Date(2024, 2, 15),
-    returnDate: new Date(2024, 2, 18)
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 15),
+      returnDate: new Date(2024, 2, 18)
+    }]
   },
   {
     name: "Whiteboard",
     location: "Mankato",
-    checkoutDate: new Date(2024, 2, 15),
-    returnDate: new Date(2024, 2, 18)
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 15),
+      returnDate: new Date(2024, 2, 18)
+    }]
   },
   {
     name: "Whiteboard",
     location: "Mankato",
-    checkoutDate: new Date(2024, 2, 15),
-    returnDate: new Date(2024, 2, 18)
+    datesInUse: []
   },
   {
     name: "Table",
     location: "Minneapolis",
-    checkoutDate: new Date(2024, 2, 20),
-    returnDate: new Date(2024, 2, 23)
+    datesInUse: [{
+      checkoutDate: new Date(2024, 2, 20),
+      returnDate: new Date(2024, 2, 23)
+    }]
   },
   {
     name: "Table",
     location: "Minneapolis",
-    checkoutDate: new Date(2024, 2, 20),
-    returnDate: new Date(2024, 2, 23)
+    datesInUse: []
   },
   {
     name: "Table",
     location: "Mankato",
-    checkoutDate: new Date(2024, 2, 20),
-    returnDate: new Date(2024, 2, 23)
+    datesInUse: []
   }
 ];
 

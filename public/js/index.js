@@ -79,8 +79,6 @@ $(function () {
 
   let checkoutDate;
   let returnDate;
-
-  // will contain location: { [itemName]: {id[] (doubles as count with .length)} } 
   const items = {};
   let name;
   let email;
@@ -122,7 +120,7 @@ $(function () {
       ({
         ...obj,
         data: obj.data.filter(dataObj =>
-          isAvailable(dataObj.checkoutDate, dataObj.returnDate)
+          isAvailable(dataObj.datesInUse)
         )
       })
       )
@@ -131,14 +129,16 @@ $(function () {
     populateTable();
   }
 
-  function isAvailable(itemCheckoutDateString, itemReturnDateString) {
-    const dataCheckoutDate = new Date(itemCheckoutDateString);
-    const dataReturnDate = new Date(itemReturnDateString);
+  function isAvailable(datesInUse) {
+    for (let dates of datesInUse) {
+      const dataCheckoutDate = new Date(dates.checkoutDate);
+      const dataReturnDate = new Date(dates.returnDate);
 
-    return (
-      checkoutDate > dataReturnDate ||
-      returnDate < dataCheckoutDate
-    );
+      if (checkoutDate <= dataReturnDate && returnDate >= dataCheckoutDate)
+        return false;
+    }
+
+    return true;
   }
 
   function populateTable() {
@@ -159,29 +159,17 @@ $(function () {
 
       for (let item of itemArr) {
         const itemName = item._id.name;
-        const tableRow = $(`#${itemName}`);
+        let tableRow = $(`#${itemName}`);
 
         if (!tableRow.length) {
-          const newTableRow = $(`
+          tableRow = $(`
           <tr id="${itemName}">
             <th class="ps-2">${itemName}</th>
           </tr>
           `).appendTo(checkoutTable);
-
-          newTableRow.append($(`
-          <td>
-            <div class="d-flex flex-column gap-1">
-              <span>Available: ${item.data.length}</span>
-              <div>
-                <span>Needed: </span>
-                <input id="${item._id.location}-${item._id.name}" class="quantity-select" type="number" min="0" max="${item.data.length}" placeholder="0" onkeydown="return false">
-              </div>
-            </div>
-          </td>
-          `))
         }
-        else {
-          tableRow.append($(`
+
+        tableRow.append($(`
           <td>
             <div class="d-flex flex-column gap-1">
               <span>Available: ${item.data.length}</span>
@@ -192,31 +180,12 @@ $(function () {
             </div>
           </td>
           `));
-        }
+
+        // const numInput = $(`${item._id.location}-${item._id.name}`)
+
+        // numInput.on("")
       }
     }
-
-    // rename this to availableItems
-    // const aggregateItems = [];
-
-    // for (let item of items) {
-    //   const result = aggregateItems.findIndex((aggregateItem) => {
-    //     aggregateItem.name === item.name && aggregateItem.location === item.location
-    //   });
-
-    //   if (result !== -1) {
-    //     aggregateItems[i].count++;
-    //   }
-    //   else {
-    //     aggregateItems.push(
-    //       {
-    //         name: item.name,
-    //         location: item.location,
-    //         count: 1
-    //       }
-    //     )
-    //   }
-    // }
 
     //   if (content && articleId) {
     //     const response = await fetch('/api/comment', {
@@ -292,4 +261,37 @@ $(function () {
   body.on("submit", "#date-select", checkAvailability);
   body.on("click", "#checkout-btn", handleCheckout);
   body.on("click", "#confirm-btn", handleConfirm);
+
+  body.on("input", "[type=number]", function () {
+    const id = $(this).attr("id");
+    const [location, itemName] = id.split("-")
+    const val = $(this).val();
+    let itemGroup;
+
+    for (let itemArr of availableItems) {
+      const foundItem = itemArr.find((item) => item._id.name === itemName && item._id.location === location);
+
+      if (foundItem) {
+        itemGroup = foundItem;
+        break;
+      }
+    }
+
+    if (val > 0) {
+      if (!items[location])
+        items[location] = {};
+
+      items[location] = { ...items[location], [itemName]: { id: [] } };
+
+      for (let i = 0; i < val; i++) {
+        items[location][itemName].id.push(itemGroup.data[i].id);
+      }
+    }
+    else {
+      delete items[location][itemName];
+
+      if (Object.keys(items[location]).length === 0)
+        delete items[location];
+    }
+  })
 });

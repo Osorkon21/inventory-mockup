@@ -211,7 +211,7 @@ $(function () {
               <span>Available: ${item.data.length}</span>
               <div>
                 <span>Needed: </span>
-                <input id="${item._id.location}-${item._id.name}" class="quantity-select" type="number" min="0" max="${item.data.length}" placeholder="0" onkeydown="return false">
+                <input id="${item._id.location}-${item._id.name}" class="quantity-select" type="number" min="0" max="${item.data.length}" placeholder="0">
               </div>
             </div>
           </td>
@@ -427,8 +427,18 @@ $(function () {
   body.on("input", "[type=number]", function () {
     const id = $(this).attr("id");
     const [location, itemName] = id.split("-")
-    const val = $(this).val();
+    const maxVal = Number($(this).attr("max"));
+    let val = Number($(this).val());
     let itemGroup;
+
+    if (val > maxVal) {
+      val = maxVal;
+      $(this).val(maxVal);
+    }
+    else if (val < 0) {
+      val = 0;
+      $(this).val(0);
+    }
 
     for (let itemArr of availableItems) {
       const foundItem = itemArr.find((item) => item._id.name === itemName && item._id.location === location);

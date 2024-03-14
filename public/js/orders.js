@@ -19,6 +19,8 @@ $(function () {
 
         if (allOrders.length)
           populatePage();
+        else
+          orderContainer.text("No current orders!")
 
       }
       else

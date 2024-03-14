@@ -13,7 +13,7 @@ const itemSchema = new Schema(
     datesInUse: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Date"
+        ref: "Dates"
       }
     ]
   },

@@ -19,6 +19,24 @@ router.get("/", async (_, res) => {
         $match: {
           count: { $gt: 0 }
         }
+      },
+      {
+        $unwind: "$data"
+      },
+      {
+        $lookup: {
+          from: "dates",
+          localField: "data.datesInUse",
+          foreignField: "_id",
+          as: "data.datesInUse"
+        }
+      },
+      {
+        $group: {
+          _id: "$_id",
+          count: { $first: "$count" },
+          data: { $push: "$data" }
+        }
       }
     ]);
 

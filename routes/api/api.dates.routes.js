@@ -1,11 +1,11 @@
 import express from "express"
 const router = express.Router();
-import { Date } from "../../models/index.js"
+import { Dates } from "../../models/index.js"
 
-// create new Date
+// create new Dates
 router.post("/", async (req, res) => {
   try {
-    const result = await Date.create(req.body);
+    const result = await Dates.create(req.body);
 
     res.json({ status: "success", result });
   }

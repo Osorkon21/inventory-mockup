@@ -276,7 +276,7 @@ $(function () {
 
         const locationEl = $(`
         <div class="ms-2">
-          <h6>${location}</h6>
+          <p><strong>${location}</strong></p>
         </div>
         `).appendTo(modalBody);
 
@@ -294,8 +294,31 @@ $(function () {
 
     if (confirmBtn.attr("class") === "btn btn-primary") {
       const allItemIds = []
+      let newDatesId;
 
+      try {
+        const newDates = {
+          checkoutDate: checkoutDate,
+          returnDate: returnDate
+        }
 
+        const query = await fetch('/api/dates', {
+          method: 'POST',
+          body: JSON.stringify(newDates),
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        const response = await query.json();
+
+        if (response.status === "success") {
+          newDatesId = response.result._id;
+        }
+        else
+          throw new Error("Create Dates failed");
+      }
+      catch (err) {
+        console.log(err.message)
+      }
 
       for (let location of Object.keys(items)) {
         for (let item of Object.keys(items[location])) {
@@ -317,12 +340,7 @@ $(function () {
               if (response.status === "success") {
                 const result = response.result;
 
-                const newDates = {
-                  checkoutDate: checkoutDate,
-                  returnDate: returnDate
-                }
-
-                result.datesInUse.push(newDates);
+                result.datesInUse.push(newDatesId);
 
                 try {
                   const query1 = await fetch(`/api/items/${id}`, {
@@ -353,10 +371,7 @@ $(function () {
       try {
         const newOrder = {
           items: allItemIds,
-          datesInUse: {
-            checkoutDate: checkoutDate,
-            returnDate: returnDate
-          },
+          datesInUse: [newDatesId],
           whoOrdered: name,
           email: email
         }
@@ -369,9 +384,7 @@ $(function () {
 
         const response = await query.json();
 
-        if (response.status === "success")
-          console.log(response);
-        else
+        if (response.status !== "success")
           throw new Error("Create Order failed");
       }
       catch (err) {

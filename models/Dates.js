@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const dateSchema = new Schema(
+const datesSchema = new Schema(
   {
     checkoutDate: {
       type: Date,
@@ -17,6 +17,6 @@ const dateSchema = new Schema(
   }
 )
 
-const Date = model('Date', dateSchema);
+const Dates = model('Dates', datesSchema);
 
-export default Date;
+export default Dates;

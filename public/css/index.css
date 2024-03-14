@@ -1,14 +1,27 @@
+@font-face {
+  font-family: DINOT;
+  src: url("../font/Dinot\ Font.otf") format("opentype");
+}
+
+@font-face {
+  font-family: DINOT;
+  font-weight: bold;
+  src: url("../font/DINOT-Bold.ttf") format("truetype");
+}
+
 body {
-  background-color: aquamarine;
+  background-color: white;
+  font-family: DINOT, sans-serif;
 }
 
 .logo {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 200px;
-  height: 200px;
+  width: 355px;
+  height: 147px;
   margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 h1 {
@@ -50,4 +63,12 @@ table {
 #name,
 #email {
   width: 175px;
+}
+
+#availability-btn,
+#checkout-btn,
+#order-link,
+#confirm-btn {
+  background-color: #006938;
+  color: #FFFFFF;
 }

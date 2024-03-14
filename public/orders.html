@@ -4,22 +4,39 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Request</title>
+    <title>Item Checkout</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
-    <link href="./css/index.css" rel="stylesheet">
+    <link href="./css/orders.css" rel="stylesheet">
   </head>
 
   <body>
-    <img class="logo" src="https://picsum.photos/seed/picsum/200"></img>
+    <img class="logo" src="./images/Bolton-Menk.png"></img>
 
-    <h1>
-      BOLTON & MENK
-    </h1>
+    <div class="mt-2 d-flex justify-content-center">
+
+      <section class="checkout-form px-5">
+        <h2 class="form-header mb-4">
+          CURRENT ORDERS
+        </h2>
+
+        <section class="d-flex flex-column gap-3" id="order-container"></section>
+
+        <div class="d-flex justify-content-between mt-2">
+          <a type="button" class="btn mt-4 mb-2" id="checkout-btn" href="/">
+            Back to Checkout
+          </a>
+        </div>
+      </section>
+    </div>
+
+
+
+    <script src="./js/orders.js"></script>
   </body>
 
 </html>

@@ -8,7 +8,8 @@ router.get("/", async (req, res) => {
     const result = await Order.find()
 
       // do not include __v field in the query results
-      .select("-__v");
+      .select("-__v")
+      .populate("datesInUse");
 
     res.json({ status: "success", result });
   }

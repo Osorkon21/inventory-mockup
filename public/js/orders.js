@@ -1,5 +1,7 @@
 $(function () {
   async function getOrders() {
+    // loading.text("Loading orders...")
+
     try {
       const query = await fetch("/api/orders", {
         method: "GET",
@@ -13,10 +15,11 @@ $(function () {
       if (response.status === "success") {
         allOrders = response.result;
 
-        console.log(allOrders)
+        orderContainer.empty();
 
         if (allOrders.length)
           populatePage();
+
       }
       else
         throw new Error("Get all Orders failed")
@@ -24,13 +27,13 @@ $(function () {
     catch (err) {
       console.log(err.message);
     }
+
+    // loading.text("")
   }
 
 
 
   function populatePage() {
-    orderContainer.empty();
-
     for (let order of allOrders) {
       orderContainer.append($(`
       <div class="d-flex justify-content-between align-items-center">
@@ -50,6 +53,7 @@ $(function () {
 
   const body = $("body");
   const orderContainer = $("#order-container")
+  // const loading = $("#loading")
 
   let allOrders = [];
 
@@ -67,9 +71,6 @@ $(function () {
       const response = await query.json();
 
       if (response.status === "success") {
-
-        console.log(response.result)
-
         await getOrders();
       }
       else

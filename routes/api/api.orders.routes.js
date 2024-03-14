@@ -1,6 +1,6 @@
 import express from "express"
 const router = express.Router();
-import { Order } from "../../models/index.js"
+import { Item, Order } from "../../models/index.js"
 
 // get all Orders
 router.get("/", async (req, res) => {
@@ -20,20 +20,20 @@ router.get("/", async (req, res) => {
 });
 
 // get an Order
-router.get("/:orderId", async (req, res) => {
-  try {
-    const result = await Order.findOne({ _id: req.params.orderId })
+// router.get("/:orderId", async (req, res) => {
+//   try {
+//     const result = await Order.findOne({ _id: req.params.orderId })
 
-      // do not include __v field in the query results
-      .select("-__v");
+//       // do not include __v field in the query results
+//       .select("-__v");
 
-    res.json({ status: "success", result });
-  }
-  catch (err) {
-    console.error(err.message);
-    res.status(500).json({ status: "error", result: err.message });
-  }
-});
+//     res.json({ status: "success", result });
+//   }
+//   catch (err) {
+//     console.error(err.message);
+//     res.status(500).json({ status: "error", result: err.message });
+//   }
+// });
 
 // create new Order
 router.post("/", async (req, res) => {
@@ -82,42 +82,25 @@ router.delete("/:orderId", async (req, res) => {
   try {
     const result = await Order.findByIdAndDelete(req.params.orderId);
 
-    // delete Order's Thoughts when Order deleted
-    for (var i = 0; i < result.thoughts.length; i++)
-      await Thought.findByIdAndDelete(result.thoughts[i]);
+    // delete relevant datesInUse from Items in Order
+    for (var i = 0; i < result.items.length; i++) {
+      await Item.findOneAndUpdate(
+        {
+          _id: result.items[i]
+        },
+        {
+          $pull: { datesInUse: result.datesInUse[0]._id }
+        },
+      )
+    }
 
-    res.json({ status: "Order and all thoughts deleted!", result });
+    res.json({ status: "success", result });
   }
   catch (err) {
     console.error(err.message);
     res.status(500).json({ status: "error", result: err.message });
   }
 });
-
-// add friend to Order's friends list
-// router.post("/:orderId/friends/:friendId", async (req, res) => {
-//   try {
-//     const result = await Order.findOneAndUpdate(
-//       {
-//         // find Order
-//         _id: req.params.orderId
-//       },
-//       {
-//         // add new friend to Order's friends array
-//         $push: { friends: req.params.friendId }
-//       },
-//       {
-//         new: true
-//       }
-//     );
-
-//     res.json({ status: "success", result });
-//   }
-//   catch (err) {
-//     console.error(err.message);
-//     res.status(500).json({ status: "error", result: err.message });
-//   }
-// });
 
 // remove friend from Order's friends list
 // router.delete("/:orderId/friends/:friendId", async (req, res) => {
@@ -137,6 +120,31 @@ router.delete("/:orderId", async (req, res) => {
 //     );
 
 //     res.json({ status: "delete successful", result });
+//   }
+//   catch (err) {
+//     console.error(err.message);
+//     res.status(500).json({ status: "error", result: err.message });
+//   }
+// });
+
+// add friend to Order's friends list
+// router.post("/:orderId/friends/:friendId", async (req, res) => {
+//   try {
+//     const result = await Order.findOneAndUpdate(
+//       {
+//         // find Order
+//         _id: req.params.orderId
+//       },
+//       {
+//         // add new friend to Order's friends array
+//         $push: { friends: req.params.friendId }
+//       },
+//       {
+//         new: true
+//       }
+//     );
+
+//     res.json({ status: "success", result });
 //   }
 //   catch (err) {
 //     console.error(err.message);
